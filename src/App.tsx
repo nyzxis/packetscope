@@ -46,57 +46,65 @@ export default function App() {
   }, [activeScenario, filterText]);
 
   return (
-    <div className="relative flex h-screen w-screen flex-col overflow-hidden bg-[#030804] text-[#86efac] font-body crt-scanlines">
-      {/* Tier 1: Oscilloscope Header */}
-      <OscilloscopeHeader
-        isCapturing={isCapturing}
-        onToggleCapture={() => setIsCapturing(!isCapturing)}
-        packetCount={filteredPackets.length}
-        threatLevel={activeScenario.threatLevel}
-        bitrate="48.2 Mbps"
-        onOpenGuide={() => setIsGuideOpen(true)}
-      />
-
-      {/* Tier 1.5: Wireshark Filter & Scenario Switcher Bar */}
-      <FilterBar
-        filterText={filterText}
-        setFilterText={setFilterText}
-        scenarios={PCAP_PRESETS}
-        activeScenarioId={activeScenario.id}
-        onSelectScenario={handleSelectScenario}
-      />
-
-      {/* Tier 2: Upper Packet Stream Table (42% height) */}
-      <div className="h-[42%] w-full overflow-hidden">
-        <PacketStreamTable
-          packets={filteredPackets}
-          selectedPacket={selectedPacket}
-          onSelectPacket={(pkt) => {
-            setSelectedPacket(pkt);
-            setActiveByteRange(null);
-          }}
+    <div className="min-h-screen w-full bg-[#020503] text-[#86efac] font-body py-3 sm:py-8 px-3 sm:px-6 flex flex-col items-center justify-start crt-scanlines selection:bg-[#00ff66]/30 selection:text-white">
+      {/* Containerized Shell */}
+      <div className="w-full max-w-7xl mx-auto rounded-2xl border border-[#13331a] bg-[#061108] shadow-2xl overflow-hidden flex flex-col">
+        {/* Tier 1: Oscilloscope Header */}
+        <OscilloscopeHeader
+          isCapturing={isCapturing}
+          onToggleCapture={() => setIsCapturing(!isCapturing)}
+          packetCount={filteredPackets.length}
+          threatLevel={activeScenario.threatLevel}
+          bitrate="48.2 Mbps"
+          onOpenGuide={() => setIsGuideOpen(true)}
         />
-      </div>
 
-      {/* Tier 3: Lower Inspection Split (58% height) */}
-      <div className="flex h-[58%] w-full flex-col md:flex-row overflow-hidden border-t border-[#13331a]">
-        {/* Left Sub-pane: Protocol Dissector Tree (50%) */}
-        <div className="h-1/2 md:h-full md:w-1/2 overflow-hidden">
-          <ProtocolTreeDissector
-            packet={selectedPacket}
-            activeByteRange={activeByteRange}
-            setActiveByteRange={setActiveByteRange}
+        {/* Tier 1.5: Wireshark Filter & Scenario Switcher Bar */}
+        <FilterBar
+          filterText={filterText}
+          setFilterText={setFilterText}
+          scenarios={PCAP_PRESETS}
+          activeScenarioId={activeScenario.id}
+          onSelectScenario={handleSelectScenario}
+        />
+
+        {/* Tier 2: Upper Packet Stream Table */}
+        <div className="h-[260px] sm:h-[300px] lg:h-[340px] w-full overflow-hidden">
+          <PacketStreamTable
+            packets={filteredPackets}
+            selectedPacket={selectedPacket}
+            onSelectPacket={(pkt) => {
+              setSelectedPacket(pkt);
+              setActiveByteRange(null);
+            }}
           />
         </div>
 
-        {/* Right Sub-pane: Synchronized Hex / ASCII Dump (50%) */}
-        <div className="h-1/2 md:h-full md:w-1/2 overflow-hidden">
-          <HexDumpViewer
-            packet={selectedPacket}
-            activeByteRange={activeByteRange}
-          />
+        {/* Tier 3: Lower Inspection Split (Responsive Stacking on Mobile) */}
+        <div className="flex flex-col lg:flex-row w-full divide-y lg:divide-y-0 lg:divide-x divide-[#13331a] border-t border-[#13331a]">
+          {/* Left Sub-pane: Protocol Dissector Tree */}
+          <div className="w-full lg:w-1/2 h-[320px] sm:h-[360px] lg:h-[420px] overflow-hidden">
+            <ProtocolTreeDissector
+              packet={selectedPacket}
+              activeByteRange={activeByteRange}
+              setActiveByteRange={setActiveByteRange}
+            />
+          </div>
+
+          {/* Right Sub-pane: Synchronized Hex / ASCII Dump */}
+          <div className="w-full lg:w-1/2 h-[320px] sm:h-[360px] lg:h-[420px] overflow-hidden">
+            <HexDumpViewer
+              packet={selectedPacket}
+              activeByteRange={activeByteRange}
+            />
+          </div>
         </div>
       </div>
+
+      {/* Footer Attribution */}
+      <footer className="mt-6 text-center font-mono text-[11px] text-zinc-600">
+        PacketScope • Wire-Level PCAP Dissector • Built by <a href="https://nyzxis.vercel.app/" target="_blank" rel="noreferrer" className="text-[#00ff66]/80 hover:text-[#00ff66]">nyzxis</a>
+      </footer>
 
       {/* Instructional Guide Modal */}
       <PacketGuideModal

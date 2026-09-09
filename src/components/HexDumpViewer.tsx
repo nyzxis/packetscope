@@ -45,15 +45,16 @@ export function HexDumpViewer({ packet, activeByteRange }: HexDumpViewerProps) {
   }
 
   return (
-    <div className="h-full w-full overflow-y-auto bg-[#020503] p-3 font-mono text-[11px] select-text">
-      <div className="mb-2 flex items-center justify-between border-b border-[#13331a] pb-1.5">
-        <span className="font-display text-[11px] font-bold uppercase tracking-wider text-[#00ff66]">
-          Packet Bytes [{packet.length} bytes]
-        </span>
-        <span className="text-[10px] text-zinc-500">OFFSET (HEX) | DUMP | ASCII</span>
-      </div>
+    <div className="h-full w-full overflow-x-auto overflow-y-auto bg-[#020503] p-3 font-mono text-[11px] select-text">
+      <div className="min-w-[540px]">
+        <div className="mb-2 flex items-center justify-between border-b border-[#13331a] pb-1.5">
+          <span className="font-display text-[11px] font-bold uppercase tracking-wider text-[#00ff66]">
+            Packet Bytes [{packet.length} bytes]
+          </span>
+          <span className="text-[10px] text-zinc-500">OFFSET (HEX) | DUMP | ASCII</span>
+        </div>
 
-      <div className="space-y-1">
+        <div className="space-y-1">
         {byteRows.map((row) => (
           <div key={row.offset} className="flex items-center gap-4 py-0.5 hover:bg-[#06140a] rounded px-1">
             {/* Offset */}
@@ -95,6 +96,7 @@ export function HexDumpViewer({ packet, activeByteRange }: HexDumpViewerProps) {
             </div>
           </div>
         ))}
+      </div>
       </div>
     </div>
   );

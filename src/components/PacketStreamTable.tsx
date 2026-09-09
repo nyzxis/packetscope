@@ -28,8 +28,8 @@ export function PacketStreamTable({
   };
 
   return (
-    <div className="h-full w-full overflow-y-auto bg-[#030804] border-b border-[#13331a]">
-      <table className="w-full text-left font-mono text-xs border-collapse">
+    <div className="h-full w-full overflow-x-auto overflow-y-auto bg-[#030804] border-b border-[#13331a]">
+      <table className="min-w-[640px] w-full text-left font-mono text-xs border-collapse">
         <thead className="sticky top-0 z-10 bg-[#061108] border-b border-[#13331a] text-[10px] text-zinc-400 uppercase">
           <tr>
             <th className="py-1.5 px-3 w-16">No.</th>
