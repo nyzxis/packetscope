@@ -1,5 +1,5 @@
 import { useEffect, useRef } from 'react';
-import { Broadcast, Play, Pause, ArrowClockwise, ShieldWarning } from '@phosphor-icons/react';
+import { Broadcast, Play, Pause, ArrowClockwise, ShieldWarning, Question } from '@phosphor-icons/react';
 
 interface OscilloscopeHeaderProps {
   isCapturing: boolean;
@@ -7,6 +7,7 @@ interface OscilloscopeHeaderProps {
   packetCount: number;
   threatLevel: string;
   bitrate: string;
+  onOpenGuide: () => void;
 }
 
 export function OscilloscopeHeader({
@@ -14,7 +15,8 @@ export function OscilloscopeHeader({
   onToggleCapture,
   packetCount,
   threatLevel,
-  bitrate
+  bitrate,
+  onOpenGuide
 }: OscilloscopeHeaderProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
@@ -118,6 +120,13 @@ export function OscilloscopeHeader({
 
           {/* Control Buttons */}
           <div className="flex items-center gap-1.5">
+            <button
+              onClick={onOpenGuide}
+              className="flex items-center gap-1.5 rounded border border-[#00ff66]/30 bg-[#00ff66]/10 px-2.5 py-1 text-xs font-bold text-[#00ff66] hover:bg-[#00ff66]/20 hover:text-white transition-colors"
+            >
+              <Question size={13} weight="bold" />
+              <span>How to Use</span>
+            </button>
             <button
               onClick={onToggleCapture}
               className={`flex items-center gap-1.5 rounded px-2.5 py-1 text-xs font-bold transition-all border ${

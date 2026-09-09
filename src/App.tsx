@@ -6,6 +6,7 @@ import { FilterBar } from './components/FilterBar';
 import { PacketStreamTable } from './components/PacketStreamTable';
 import { ProtocolTreeDissector } from './components/ProtocolTreeDissector';
 import { HexDumpViewer } from './components/HexDumpViewer';
+import { PacketGuideModal } from './components/PacketGuideModal';
 
 export default function App() {
   const [activeScenario, setActiveScenario] = useState<PCAPScenario>(PCAP_PRESETS[0]);
@@ -13,6 +14,7 @@ export default function App() {
   const [filterText, setFilterText] = useState('');
   const [isCapturing, setIsCapturing] = useState(true);
   const [activeByteRange, setActiveByteRange] = useState<[number, number] | null>(null);
+  const [isGuideOpen, setIsGuideOpen] = useState(false);
 
   // Switch scenario
   const handleSelectScenario = (scenario: PCAPScenario) => {
@@ -52,6 +54,7 @@ export default function App() {
         packetCount={filteredPackets.length}
         threatLevel={activeScenario.threatLevel}
         bitrate="48.2 Mbps"
+        onOpenGuide={() => setIsGuideOpen(true)}
       />
 
       {/* Tier 1.5: Wireshark Filter & Scenario Switcher Bar */}
@@ -94,6 +97,12 @@ export default function App() {
           />
         </div>
       </div>
+
+      {/* Instructional Guide Modal */}
+      <PacketGuideModal
+        isOpen={isGuideOpen}
+        onClose={() => setIsGuideOpen(false)}
+      />
     </div>
   );
 }
